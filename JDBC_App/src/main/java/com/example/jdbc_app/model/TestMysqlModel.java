@@ -7,7 +7,7 @@ import java.util.Map;
 public class TestMysqlModel implements MysqlModel{
 
     @Override
-    public ArrayList<Map<String, Object>> select(ArrayList<String> attrName, String ssn, String fname, String lname, char sex, Double salary, String symbol, String dName) throws Exception {
+    public ArrayList<Map<String, Object>> select(ArrayList<String> attrName, String ssn, String fname, Character sex, Double salary, String symbol, String dName) throws Exception {
         ArrayList<Map<String, Object>> result = new ArrayList<>();
         HashMap<String, Object> tuple1 = new HashMap<>();
         tuple1.put("FNAME", "John");
