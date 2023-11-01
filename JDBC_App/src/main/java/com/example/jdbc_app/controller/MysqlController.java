@@ -1,15 +1,17 @@
 package com.example.jdbc_app.controller;
 
+import com.example.jdbc_app.model.Employee;
 import com.example.jdbc_app.model.MysqlConnector;
 import com.example.jdbc_app.model.MysqlModel;
 import com.example.jdbc_app.model.TestMysqlModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.lang.reflect.Array;
 import java.net.URL;
@@ -22,13 +24,13 @@ public class MysqlController implements Initializable {
 
     //select 관련 fxml
     @FXML
-    private CheckBox checkBoxAll, checkBoxFNAME, checkBoxMINIT, checkBoxLNAME, checkBoxSSN, checkBoxBDATE, checkBoxADDRESS, checkBoxSEX, checkBoxSUPER_SSN, checkBoxDNAME;
+    private CheckBox checkBoxAll, checkBoxFNAME, checkBoxMINIT, checkBoxLNAME, checkBoxSSN, checkBoxBDATE, checkBoxADDRESS, checkBoxSEX, checkBoxSALARY, checkBoxSUPER_SSN, checkBoxDNAME;
 
     @FXML
     private TextField textFieldSsn, textFieldFNAME, textFieldSalary;
 
     @FXML
-    private ChoiceBox choiceBoxSex, choiceBoxDNAME, choiceBoxSymbol;
+    private ChoiceBox choiceBoxSex, choiceBoxDNAME, choiceBoxSymbol, selectRecord;
 
     // insert 관련 fxml
     @FXML
@@ -39,6 +41,33 @@ public class MysqlController implements Initializable {
 
     @FXML
     private Button insertBtn;
+
+    @FXML
+    private TableView<Employee> tableView;
+    @FXML
+    private TableColumn<Employee, String> select;
+    @FXML
+    private TableColumn<Employee, String> fname;
+    @FXML
+    private TableColumn<Employee, String> minit;
+    @FXML
+    private TableColumn<Employee, String> lname;
+    @FXML
+    private TableColumn<Employee, String> ssn;
+    @FXML
+    private TableColumn<Employee, String> bdate;
+    @FXML
+    private TableColumn<Employee, String> address;
+    @FXML
+    private TableColumn<Employee, Character> sex;
+    @FXML
+    private TableColumn<Employee, Double> salary;
+    @FXML
+    private TableColumn<Employee, String> superSsn;
+    @FXML
+    private TableColumn<Employee, String> dname;
+
+    ObservableList<Employee> employees;
 
     ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     ArrayList<TextField> textFields = new ArrayList<>();
@@ -84,6 +113,8 @@ public class MysqlController implements Initializable {
                     System.out.println("key : " + key + " value : " + map.get(key));
                 }
             }
+
+
 
         }catch (Exception e){
 
@@ -188,6 +219,7 @@ public class MysqlController implements Initializable {
         checkBoxes.add(checkBoxBDATE);
         checkBoxes.add(checkBoxADDRESS);
         checkBoxes.add(checkBoxSEX);
+        checkBoxes.add(checkBoxSALARY);
         checkBoxes.add(checkBoxSUPER_SSN);
         checkBoxes.add(checkBoxDNAME);
 
@@ -209,5 +241,25 @@ public class MysqlController implements Initializable {
         // insertBox 내용 채우기
         insertCBoxSex.getItems().addAll('M', 'F');
 
+        // TableView 초기화
+        employees = FXCollections.observableArrayList(
+                new Employee("fname", "m", "lName", "1234",
+                        "1999", "seoul", 'M', 1000.1, "4123", "Research")
+        );
+
+        // TableView 채우기
+        select.setCellValueFactory(new PropertyValueFactory<Employee, String >("select"));
+        fname.setCellValueFactory(new PropertyValueFactory<Employee, String >("fname"));
+        minit.setCellValueFactory(new PropertyValueFactory<Employee, String>("minit"));
+        lname.setCellValueFactory(new PropertyValueFactory<Employee, String>("lname"));
+        ssn.setCellValueFactory(new PropertyValueFactory<Employee, String>("ssn"));
+        bdate.setCellValueFactory(new PropertyValueFactory<Employee, String>("bdate"));
+        address.setCellValueFactory(new PropertyValueFactory<Employee, String>("address"));
+        sex.setCellValueFactory(new PropertyValueFactory<Employee, Character>("sex"));
+        salary.setCellValueFactory(new PropertyValueFactory<Employee, Double>("salary"));
+        superSsn.setCellValueFactory(new PropertyValueFactory<Employee, String>("superSsn"));
+        dname.setCellValueFactory(new PropertyValueFactory<Employee, String>("dname"));
+
+        tableView.setItems(employees);
     }
 }
