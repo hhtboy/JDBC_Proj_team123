@@ -20,6 +20,7 @@ public class MysqlController implements Initializable {
     @FXML
     private Button searchBtn;
 
+    //select 관련 fxml
     @FXML
     private CheckBox checkBoxAll, checkBoxFNAME, checkBoxMINIT, checkBoxLNAME, checkBoxSSN, checkBoxBDATE, checkBoxADDRESS, checkBoxSEX, checkBoxSUPER_SSN, checkBoxDNAME;
 
@@ -28,6 +29,16 @@ public class MysqlController implements Initializable {
 
     @FXML
     private ChoiceBox choiceBoxSex, choiceBoxDNAME, choiceBoxSymbol;
+
+    // insert 관련 fxml
+    @FXML
+    private TextField insertTxtFNAME, insertTxtMINIT, insertTxtLNAME, insertTxtSSN, insertTxtBDATE, insertTxtADDRESS, insertTxtSALARY, insertTxtSUPPER_SSN, insertTxtDNO;
+
+    @FXML
+    private ChoiceBox insertCBoxSex;
+
+    @FXML
+    private Button insertBtn;
 
     ArrayList<CheckBox> checkBoxes = new ArrayList<>();
 
@@ -111,6 +122,56 @@ public class MysqlController implements Initializable {
         }
     }
 
+    // 직원 정보 추가!
+    @FXML
+    protected void onInsertBtnClick(ActionEvent event) {
+        String fname = insertTxtFNAME.getText();
+        String minit = insertTxtMINIT.getText();
+        String lname = insertTxtLNAME.getText();
+        String ssn = insertTxtSSN.getText();
+        String bdate = insertTxtBDATE.getText();
+        String address = insertTxtADDRESS.getText();
+        Character sex = null;
+        if(insertCBoxSex.getValue() != null) {
+            sex = (Character)insertCBoxSex.getValue();
+        }
+        Double salary;
+        if(insertTxtSALARY.getText() == null || insertTxtSALARY.getText().trim().isEmpty()) {
+            salary = null;
+        }
+        else {
+            salary = Double.parseDouble(insertTxtSALARY.getText());
+        }
+        String super_ssn = insertTxtSUPPER_SSN.getText();
+        Long dno;
+        if(insertTxtDNO.getText() == null || insertTxtDNO.getText().trim().isEmpty()) {
+            dno = null;
+        }
+        else {
+            dno = Long.parseLong(insertTxtDNO.getText());
+        }
+
+        // insert 할 튜플 생성
+        Map<String, Object> tuple = new HashMap<>();
+        tuple.put("FNAME", fname);
+        tuple.put("MINIT", minit);
+        tuple.put("LNAME", lname);
+        tuple.put("SSN", ssn);
+        tuple.put("BDATE", bdate);
+        tuple.put("ADDRESS", address);
+        tuple.put("SEX", sex);
+        tuple.put("SALARY", salary);
+        tuple.put("SUPER_SSN", super_ssn);
+        tuple.put("DNO", dno);
+
+        try {
+            mysqlModel.insert(tuple);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         checkBoxes.add(checkBoxFNAME);
@@ -127,6 +188,9 @@ public class MysqlController implements Initializable {
         choiceBoxSex.getItems().addAll('M', 'F');
         choiceBoxSymbol.getItems().addAll(">", "<", "=", ">=", "<=");
         choiceBoxDNAME.getItems().addAll("Research", "Administration", "Headquarters");
+
+        // insertBox 내용 채우기
+        insertCBoxSex.getItems().addAll('M', 'F');
 
     }
 }

@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TestMysqlModel implements MysqlModel{
+    ArrayList<Map<String, Object>> memoryTable = new ArrayList<>();
 
-    @Override
-    public ArrayList<Map<String, Object>> select(ArrayList<String> attrName, String ssn, String fname, Character sex, Double salary, String symbol, String dName) throws Exception {
-        ArrayList<Map<String, Object>> result = new ArrayList<>();
+    public TestMysqlModel() {
         HashMap<String, Object> tuple1 = new HashMap<>();
         tuple1.put("FNAME", "John");
         tuple1.put("SSN", "1234");
@@ -19,13 +18,18 @@ public class TestMysqlModel implements MysqlModel{
         tuple1.put("SUPERVISOR", null);
         tuple1.put("DNAME", "Research");
 
-        result.add(tuple1);
-        return result;
+        memoryTable.add(tuple1);
+    }
+
+
+    @Override
+    public ArrayList<Map<String, Object>> select(ArrayList<String> attrName, String ssn, String fname, Character sex, Double salary, String symbol, String dName) throws Exception {
+        return memoryTable;
     }
 
     @Override
     public void insert(Map<String, Object> tuple) throws Exception {
-
+        memoryTable.add(tuple);
     }
 
     @Override
