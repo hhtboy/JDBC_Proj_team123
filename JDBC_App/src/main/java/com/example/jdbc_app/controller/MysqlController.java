@@ -41,6 +41,7 @@ public class MysqlController implements Initializable {
     private Button insertBtn;
 
     ArrayList<CheckBox> checkBoxes = new ArrayList<>();
+    ArrayList<TextField> textFields = new ArrayList<>();
 
     Set<String> selectedAttr = new HashSet<>();
     private final MysqlModel mysqlModel;
@@ -170,6 +171,12 @@ public class MysqlController implements Initializable {
             throw new RuntimeException(e);
         }
 
+        // insert 이후 TEXT 필드값 초기화
+        for (TextField textField : textFields) {
+            textField.setText(null);
+        }
+        insertCBoxSex.setValue(null);
+
     }
 
     @Override
@@ -183,6 +190,16 @@ public class MysqlController implements Initializable {
         checkBoxes.add(checkBoxSEX);
         checkBoxes.add(checkBoxSUPER_SSN);
         checkBoxes.add(checkBoxDNAME);
+
+        textFields.add(insertTxtFNAME);
+        textFields.add(insertTxtMINIT);
+        textFields.add(insertTxtLNAME);
+        textFields.add(insertTxtSSN);
+        textFields.add(insertTxtBDATE);
+        textFields.add(insertTxtADDRESS);
+        textFields.add(insertTxtSUPPER_SSN);
+        textFields.add(insertTxtDNO);
+        textFields.add(insertTxtSALARY);
 
         // choiceBox 내용 채우기
         choiceBoxSex.getItems().addAll('M', 'F');
