@@ -199,6 +199,7 @@ public class MysqlController implements Initializable {
         textFields.add(insertTxtADDRESS);
         textFields.add(insertTxtSUPPER_SSN);
         textFields.add(insertTxtDNO);
+        textFields.add(insertTxtSALARY);
 
         // choiceBox 내용 채우기
         choiceBoxSex.getItems().addAll('M', 'F');
