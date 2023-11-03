@@ -6,9 +6,9 @@ public class MysqlConnector {
     Connection con = null;
 
     String server = "localhost"; // MySQL 서버 주소
-    String database = ""; // MySQL DATABASE 이름
+    String database = "mydb"; // MySQL DATABASE 이름
     String user_name = "root"; //  MySQL 서버 아이디
-    String password = "1234"; // MySQL 서버 비밀번호
+    String password = "3402"; // MySQL 서버 비밀번호
 
     public void connect() {
         try {
