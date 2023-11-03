@@ -2,19 +2,22 @@ package com.example.jdbc_app.model;
 
 import javafx.scene.control.CheckBox;
 
-public class Employee {
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Objects;
 
+public class Employee {
     private CheckBox select;
-    private String fname;
-    private String minit;
-    private String lname;
-    private String ssn;
-    private String bdate;
-    private String address;
-    private Character sex;
-    private Double salary;
-    private String superSsn;
-    private String dname;
+    private String fname = null;
+    private String minit = null;
+    private String lname = null;
+    private String ssn = null;
+    private String bdate = null;
+    private String address = null;
+    private Character sex = null;
+    private Double salary = null;
+    private String superSsn = null;
+    private String dname = null;
 
     public Employee(String fname, String minit, String lname, String ssn, String bdate, String address, Character sex, Double salary, String superSsn, String dname) {
         this.select = new CheckBox();
@@ -28,6 +31,37 @@ public class Employee {
         this.salary = salary;
         this.superSsn = superSsn;
         this.dname = dname;
+    }
+
+    public Employee(Map<String, Object> map){
+        this.select = new CheckBox();
+        for(String key : map.keySet()) {
+            if(Objects.equals(key, "FNAME")){
+                this.fname = (String)map.get(key);
+            } else if (Objects.equals(key, "MINIT")){
+                this.minit = (String)map.get(key);
+            } else if (Objects.equals(key, "LNAME")){
+                this.lname = (String)map.get(key);
+            } else if (Objects.equals(key, "SSN")){
+                this.ssn = (String)map.get(key);
+            } else if (Objects.equals(key, "BDATE")){
+                this.bdate = (String)map.get(key);
+            } else if (Objects.equals(key, "ADDRESS")){
+                this.address = (String)map.get(key);
+            } else if (Objects.equals(key, "SEX")){
+                if(map.get(key) != null){
+                    this.sex = (Character)map.get(key);
+                }
+            } else if (Objects.equals(key, "SALARY")){
+                if(map.get(key) != null){
+                    this.salary = Double.parseDouble(String.valueOf(map.get(key)));
+                }
+            } else if (Objects.equals(key, "SUPER_SSN")){
+                this.superSsn = (String)map.get(key);
+            } else if (Objects.equals(key, "DNAME")){
+                this.dname = (String)map.get(key);
+            }
+        }
     }
 
     public String getAddress() {

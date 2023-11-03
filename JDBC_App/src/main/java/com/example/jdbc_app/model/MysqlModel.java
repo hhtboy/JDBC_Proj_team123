@@ -10,5 +10,5 @@ public interface MysqlModel {
 
     void update(String ssn, String updateAttr, Object value) throws Exception;
 
-    void delete(String ssn) throws Exception;
+    void deleteBySsn(String ssn) throws Exception;
 }

@@ -38,7 +38,7 @@ public class TestMysqlModel implements MysqlModel{
     }
 
     @Override
-    public void delete(String ssn) throws Exception {
+    public void deleteBySsn(String ssn) throws Exception {
 
     }
 }
