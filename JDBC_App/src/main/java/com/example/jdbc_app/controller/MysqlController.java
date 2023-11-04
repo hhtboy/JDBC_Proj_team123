@@ -1,8 +1,8 @@
 package com.example.jdbc_app.controller;
 
 import com.example.jdbc_app.model.Employee;
-import com.example.jdbc_app.model.MysqlConnector;
 import com.example.jdbc_app.model.MysqlModel;
+import com.example.jdbc_app.model.MysqlModelImpl;
 import com.example.jdbc_app.model.TestMysqlModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,10 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
@@ -85,7 +83,7 @@ public class MysqlController implements Initializable {
     private final MysqlModel mysqlModel;
 
     public MysqlController() {
-        mysqlModel = new TestMysqlModel();
+        mysqlModel = new MysqlModelImpl();
     }
 
     @FXML
