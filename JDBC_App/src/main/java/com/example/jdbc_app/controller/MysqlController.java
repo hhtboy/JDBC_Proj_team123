@@ -99,6 +99,7 @@ public class MysqlController implements Initializable {
         Character sex = null;
         if(choiceBoxSex.getValue() != null) {
             sex = (char)choiceBoxSex.getValue();
+            choiceBoxSex.setValue(null);
         }
         Double salary;
         if(textFieldSalary.getText() == null || textFieldSalary.getText().trim().isEmpty()) {
@@ -109,6 +110,11 @@ public class MysqlController implements Initializable {
         }
         String symbol = (String)choiceBoxSymbol.getValue();
         String dname = (String)choiceBoxDNAME.getValue();
+
+        // 선택 Box 초기화
+        choiceBoxSex.setValue(null);
+        choiceBoxSymbol.setValue(null);
+        choiceBoxDNAME.setValue(null);
 
         try {
             employees = FXCollections.observableArrayList();
