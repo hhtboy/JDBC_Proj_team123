@@ -31,10 +31,9 @@ public class MysqlModelImpl implements MysqlModel {
     public ArrayList<Map<String, Object>> select(ArrayList<String> attrName, String ssn, String fname, Character sex, Double salary, String symbol, String dName) throws SQLException {
 
         ArrayList<Map<String, Object>> memoryTable = new ArrayList<>(); //arraylist 선언 및 초기화
-
         // SQL 쿼리 생성
+        // + " LEFT OUTER JOIN EMPLOYEE AS S ON E.Super_ssn = S.Ssn"
         String sql = "SELECT * FROM EMPLOYEE AS E"
-                + " LEFT OUTER JOIN EMPLOYEE AS S ON E.Super_ssn = S.Ssn"
                 + " JOIN DEPARTMENT ON E.Dno = Dnumber"
                 + " WHERE 1=1"; // 항상 true인 조건으로 두고, 뒤에 AND를 붙여 WHERE절에 조건 추가
 
@@ -45,16 +44,16 @@ public class MysqlModelImpl implements MysqlModel {
         List<Object> params = new ArrayList<>();
 
         // ssn 검색 조건이 비어있을 경우에 ssn을 선택하여 return하도록 SQL 쿼리에 추가
-        if (ssn == null) {
+        if (ssn.isEmpty()) {
             sql += " AND E.Ssn IS NOT NULL";
         }
 
         // 제공된 파라미터에 기반하여 조건, 파라미터 추가
-        if (ssn != null) {
+        if (!ssn.isEmpty()) {
             conditions.add("E.Ssn = ?"); //Ssn 검색조건 추가
             params.add(ssn); //Ssn 파라미터 추가
         }
-        if (fname != null) {
+        if (!fname.isEmpty()) {
             conditions.add("E.Fname = ?"); //Fname 검색조건 추가
             params.add(fname); //Fname 파라미터 추가
         }
@@ -66,13 +65,13 @@ public class MysqlModelImpl implements MysqlModel {
             if ("=".equals(symbol)) { //Salary 동일 조건
                 conditions.add("E.Salary = ?");
             } else if (">=".equals(symbol)) { //Salary 이상 조건
-                conditions.add("E.Salary >= ?");
-            } else if (">".equals(symbol)) { //Salary 초과 조건
-                conditions.add("E.Salary > ?");
-            } else if ("<=".equals(symbol)) { //Salary 이하 조건
                 conditions.add("E.Salary <= ?");
-            } else if ("<".equals(symbol)) { //Salary 미만 조건
+            } else if (">".equals(symbol)) { //Salary 초과 조건
                 conditions.add("E.Salary < ?");
+            } else if ("<=".equals(symbol)) { //Salary 이하 조건
+                conditions.add("E.Salary >= ?");
+            } else if ("<".equals(symbol)) { //Salary 미만 조건
+                conditions.add("E.Salary > ?");
             }
             params.add(salary); //Salary 파라미터 추가
         }
@@ -110,32 +109,49 @@ public class MysqlModelImpl implements MysqlModel {
             }
             memoryTable.add(row); // 매핑된 결과를 ArrayList에 추가
         }
+
         return memoryTable; // 최종 결과 반환
     }
 
     @Override
     public void insert(Map<String, Object> tuple) throws SQLException {
         // SQL 쿼리 생성
-        String sql = "INSERT INTO EMPLOYEE (Ssn, Fname, Minit, Lname, Bcate, Address, Sex, Salary, Super_ssn, Dno) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO EMPLOYEE (Ssn, Fname, Minit, Lname, Bdate, Address, Sex, Salary, Super_ssn, Dno) " +
+                "VALUES (";
 
-        // PreparedStatement 객체 생성
-        PreparedStatement stmt = conn.prepareStatement(sql);
+        String[] attr = {"SSN", "FNAME", "MINIT", "LNAME","BDATE","ADDRESS","SEX","SALARY","SUPER_SSN","DNO"};
 
-        // 각 필드에 대한 값을 설정
-        stmt.setString(1, (String) tuple.get("Ssn"));
-        stmt.setString(2, (String) tuple.get("Fname"));
-        stmt.setString(3, (String) tuple.get("Minit"));
-        stmt.setString(4, (String) tuple.get("Lname"));
-        stmt.setString(5, (String) tuple.get("Bcate"));
-        stmt.setString(6, (String) tuple.get("Address"));
-        stmt.setString(7, (String) tuple.get("Sex"));
-        stmt.setDouble(8, (Double) tuple.get("Salary"));
-        stmt.setString(9, (String) tuple.get("Super_ssn"));
-        stmt.setInt(10, (Integer) tuple.get("Dno"));
+        for(String s : attr){
+            // Salary와 Dno는 숫자이므로 따로 분리해서 sql 쿼리에 넣기
+            if(s.equals("SALARY") || s.equals("DNO")){
+                if(tuple.get(s) != null)
+                    sql = sql + tuple.get(s).toString();
+                // 해당 속성에 넣을 값이 없으면 null 문자열 넣기
+                else{
+                    sql = sql + "null";
+                }
+                sql = sql + ", ";
+            }
+            else{
+                if(tuple.get(s) != null && !tuple.get(s).toString().isEmpty()){
+                    sql = sql + "'" + tuple.get(s).toString() + "', ";
+                }
+                // 해당 속성에 넣을 값이 없으면 null 문자열 넣기
+                else{
+                    sql = sql + "null, ";
+                }
+            }
+        }
+
+        // 불필요한 문자열 분리
+        sql = sql.substring(0, sql.length() - 2) + ")";
+
+        // Query 준비
+        Statement stmt = conn.createStatement();
 
         // SQL 쿼리 실행
-        stmt.executeUpdate();
+        int result = stmt.executeUpdate(sql);
+        System.out.println("insert result : " + result);
     }
 
     @Override
@@ -160,13 +176,13 @@ public class MysqlModelImpl implements MysqlModel {
         stmt = conn.createStatement();
 
         // Query 실행 및 리턴
-        // result = 1이면 정상적으로 업데이트됌
+        // result = 1이면 정상적으로 업데이트됨
         int result = stmt.executeUpdate(sql);
+        System.out.println("update result : " + result);
     }
 
     @Override
     public void deleteBySsn(String ssn) throws SQLException {
-
         // SQL쿼리 생성
         String sql = "DELETE FROM EMPLOYEE WHERE Ssn = ?";
 

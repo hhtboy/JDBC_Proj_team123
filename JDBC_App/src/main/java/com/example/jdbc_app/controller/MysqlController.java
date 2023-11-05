@@ -3,7 +3,6 @@ package com.example.jdbc_app.controller;
 import com.example.jdbc_app.model.Employee;
 import com.example.jdbc_app.model.MysqlModel;
 import com.example.jdbc_app.model.MysqlModelImpl;
-import com.example.jdbc_app.model.TestMysqlModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,9 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.*;
 
 public class MysqlController implements Initializable {
@@ -189,12 +186,12 @@ public class MysqlController implements Initializable {
             salary = Double.parseDouble(insertTxtSALARY.getText());
         }
         String super_ssn = insertTxtSUPPER_SSN.getText();
-        Long dno;
+        Integer dno;
         if(insertTxtDNO.getText() == null || insertTxtDNO.getText().trim().isEmpty()) {
             dno = null;
         }
         else {
-            dno = Long.parseLong(insertTxtDNO.getText());
+            dno = Integer.parseInt(insertTxtDNO.getText());
         }
 
         // insert 할 튜플 생성
