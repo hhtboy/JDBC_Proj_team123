@@ -1,9 +1,7 @@
 package com.example.jdbc_app.model;
 
 import javafx.scene.control.CheckBox;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
@@ -20,22 +18,10 @@ public class Employee {
     private String superSsn = null;
     private String dname = null;
 
-    public Employee(String fname, String minit, String lname, String ssn, String bdate, String address, Character sex, Double salary, String superSsn, String dname) {
-        this.select = new CheckBox();
-        this.fname = fname;
-        this.minit = minit;
-        this.lname = lname;
-        this.ssn = ssn;
-        this.bdate = bdate;
-        this.address = address;
-        this.sex = sex;
-        this.salary = salary;
-        this.superSsn = superSsn;
-        this.dname = dname;
-    }
-
+    // DB에서 검색 결과 중 하나의 record로 Employee 생성하기
     public Employee(Map<String, Object> map){
         this.select = new CheckBox();
+        // Company Schema를 바탕으로 null일수도 있는 경우에는 따로 예외처리하기
         for(String key : map.keySet()) {
             if(Objects.equals(key, "Fname")){
                 this.fname = (String)map.get(key);
