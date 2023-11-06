@@ -147,7 +147,7 @@ public class MysqlController implements Initializable {
         }catch (Exception e){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
-            alert.setHeaderText("CONNECT");
+            alert.setHeaderText("SELECT");
             alert.setContentText("DB에 연결되지 않았습니다.");
             alert.showAndWait();
         }
@@ -334,14 +334,14 @@ public class MysqlController implements Initializable {
                 mysqlModel = new MysqlModelImpl(dbUserTxt.getText(), dbUserPwTxt.getText(), dbNameTxt.getText());
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
-                alert.setHeaderText("UPDATE");
+                alert.setHeaderText("CONNECT");
                 alert.setContentText("DB에 연결되었습니다.");
                 alert.showAndWait();
 
             }catch (SQLException e) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning Dialog");
-                alert.setHeaderText("UPDATE");
+                alert.setHeaderText("CONNECT");
                 alert.setContentText("DB 연결에 실패했습니다.");
                 alert.showAndWait();
             }
@@ -350,7 +350,7 @@ public class MysqlController implements Initializable {
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
-            alert.setHeaderText("UPDATE");
+            alert.setHeaderText("CONNECT");
             alert.setContentText("이미 DB에 연결되었습니다.");
             alert.showAndWait();
         }
