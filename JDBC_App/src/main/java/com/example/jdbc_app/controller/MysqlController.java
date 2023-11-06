@@ -332,8 +332,8 @@ public class MysqlController implements Initializable {
             // 한번만 연결
             try {
                 mysqlModel = new MysqlModelImpl(dbUserTxt.getText(), dbUserPwTxt.getText(), dbNameTxt.getText());
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning Dialog");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Connection Dialog");
                 alert.setHeaderText("CONNECT");
                 alert.setContentText("DB에 연결되었습니다.");
                 alert.showAndWait();

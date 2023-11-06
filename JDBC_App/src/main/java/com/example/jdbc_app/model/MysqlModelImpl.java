@@ -7,19 +7,6 @@ public class MysqlModelImpl implements MysqlModel {
     private Connection conn = null;
 
     public MysqlModelImpl(String dbacct, String password, String dbname) throws SQLException {
-        Scanner scanner = new Scanner(System.in);
-
-//        System.out.println("Enter database account: ");
-//        dbacct = scanner.nextLine();
-//        System.out.println("Enter password: ");
-//        password = scanner.nextLine();
-//        System.out.println("Enter database name: ");
-//        dbname = scanner.nextLine();
-
-//        dbacct = "root";
-//        password = "142857";
-//        dbname = "COMPANY";
-
         String url = "jdbc:mysql://localhost:3306/" + dbname + "?serverTimezone=UTC";
         try {
             this.conn = DriverManager.getConnection(url, dbacct, password);
