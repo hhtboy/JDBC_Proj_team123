@@ -1,8 +1,7 @@
 package com.example.jdbc_app.model;
 
 import javafx.scene.control.CheckBox;
-
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,46 +18,41 @@ public class Employee {
     private String superSsn = null;
     private String dname = null;
 
-    public Employee(String fname, String minit, String lname, String ssn, String bdate, String address, Character sex, Double salary, String superSsn, String dname) {
-        this.select = new CheckBox();
-        this.fname = fname;
-        this.minit = minit;
-        this.lname = lname;
-        this.ssn = ssn;
-        this.bdate = bdate;
-        this.address = address;
-        this.sex = sex;
-        this.salary = salary;
-        this.superSsn = superSsn;
-        this.dname = dname;
-    }
-
+    // DB에서 검색 결과 중 하나의 record로 Employee 생성하기
     public Employee(Map<String, Object> map){
         this.select = new CheckBox();
+        // Company Schema를 바탕으로 null일수도 있는 경우에는 따로 예외처리하기
         for(String key : map.keySet()) {
-            if(Objects.equals(key, "FNAME")){
+            if(Objects.equals(key, "Fname")){
                 this.fname = (String)map.get(key);
-            } else if (Objects.equals(key, "MINIT")){
-                this.minit = (String)map.get(key);
-            } else if (Objects.equals(key, "LNAME")){
+            } else if (Objects.equals(key, "Minit")){
+                if(map.get(key) != null)
+                    this.minit = map.get(key).toString();
+            } else if (Objects.equals(key, "Lname")){
                 this.lname = (String)map.get(key);
-            } else if (Objects.equals(key, "SSN")){
+            } else if (Objects.equals(key, "Ssn")){
                 this.ssn = (String)map.get(key);
-            } else if (Objects.equals(key, "BDATE")){
-                this.bdate = (String)map.get(key);
-            } else if (Objects.equals(key, "ADDRESS")){
-                this.address = (String)map.get(key);
-            } else if (Objects.equals(key, "SEX")){
+            } else if (Objects.equals(key, "Bdate")){
                 if(map.get(key) != null){
-                    this.sex = (Character)map.get(key);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String dateStr = sdf.format(map.get(key));
+                    this.bdate = dateStr;
                 }
-            } else if (Objects.equals(key, "SALARY")){
+            } else if (Objects.equals(key, "Address")){
+                if(map.get(key) != null)
+                    this.address = (String)map.get(key);
+            } else if (Objects.equals(key, "Sex")){
+                if(map.get(key) != null){
+                    this.sex = map.get(key).toString().charAt(0);
+                }
+            } else if (Objects.equals(key, "Salary")){
                 if(map.get(key) != null){
                     this.salary = Double.parseDouble(String.valueOf(map.get(key)));
                 }
-            } else if (Objects.equals(key, "SUPER_SSN")){
-                this.superSsn = (String)map.get(key);
-            } else if (Objects.equals(key, "DNAME")){
+            } else if (Objects.equals(key, "Super_ssn")){
+                if(map.get(key) != null)
+                    this.superSsn = (String)map.get(key);
+            } else if (Objects.equals(key, "Dname")){
                 this.dname = (String)map.get(key);
             }
         }
