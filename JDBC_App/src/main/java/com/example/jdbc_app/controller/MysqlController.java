@@ -10,7 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 
 public class MysqlController implements Initializable {
@@ -76,11 +79,18 @@ public class MysqlController implements Initializable {
     ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     ArrayList<TextField> textFields = new ArrayList<>();
 
-    Set<String> selectedAttr = new HashSet<>();
-    private final MysqlModel mysqlModel;
+
+    // DB연결 관련
+    @FXML
+    private TextField dbUserTxt;
+    @FXML
+    private TextField dbUserPwTxt;
+    @FXML
+    private TextField dbNameTxt;
+    private MysqlModel mysqlModel = null;
 
     public MysqlController() {
-        mysqlModel = new MysqlModelImpl();
+//        mysqlModel = new MysqlModelImpl();
     }
 
     @FXML
@@ -135,7 +145,11 @@ public class MysqlController implements Initializable {
 
             tableView.setItems(employees);
         }catch (Exception e){
-            System.out.println(e);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("CONNECT");
+            alert.setContentText("DB에 연결되지 않았습니다.");
+            alert.showAndWait();
         }
     }
 
@@ -289,7 +303,12 @@ public class MysqlController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
             alert.setHeaderText("UPDATE");
-            alert.setContentText(String.valueOf(e));
+//            if(e.equals(NullPointerException.class)) {
+//                alert.setContentText("DB에 연결되지 않았습니다.");
+//            }
+//            else {
+                alert.setContentText(String.valueOf(e));
+//            }
             alert.showAndWait();
         }
     }
@@ -305,6 +324,37 @@ public class MysqlController implements Initializable {
         }
 
         return ssnList;
+    }
+
+    @FXML
+    protected void onDBBtnClicked(MouseEvent event) {
+        if(mysqlModel == null) {
+            // 한번만 연결
+            try {
+                mysqlModel = new MysqlModelImpl(dbUserTxt.getText(), dbUserPwTxt.getText(), dbNameTxt.getText());
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("UPDATE");
+                alert.setContentText("DB에 연결되었습니다.");
+                alert.showAndWait();
+
+            }catch (SQLException e) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("UPDATE");
+                alert.setContentText("DB 연결에 실패했습니다.");
+                alert.showAndWait();
+            }
+
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText("UPDATE");
+            alert.setContentText("이미 DB에 연결되었습니다.");
+            alert.showAndWait();
+        }
+
     }
 
     @Override

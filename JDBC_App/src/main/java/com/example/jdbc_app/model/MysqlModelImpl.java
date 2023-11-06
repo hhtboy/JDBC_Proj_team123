@@ -6,24 +6,26 @@ import java.util.*;
 public class MysqlModelImpl implements MysqlModel {
     private Connection conn = null;
 
-    public MysqlModelImpl() {
+    public MysqlModelImpl(String dbacct, String password, String dbname) throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
-        String dbacct, password, dbname;
+//        System.out.println("Enter database account: ");
+//        dbacct = scanner.nextLine();
+//        System.out.println("Enter password: ");
+//        password = scanner.nextLine();
+//        System.out.println("Enter database name: ");
+//        dbname = scanner.nextLine();
 
-        System.out.println("Enter database account: ");
-        dbacct = scanner.nextLine();
-        System.out.println("Enter password: ");
-        password = scanner.nextLine();
-        System.out.println("Enter database name: ");
-        dbname = scanner.nextLine();
+//        dbacct = "root";
+//        password = "142857";
+//        dbname = "COMPANY";
 
         String url = "jdbc:mysql://localhost:3306/" + dbname + "?serverTimezone=UTC";
         try {
             this.conn = DriverManager.getConnection(url, dbacct, password);
         } catch (SQLException e) {
             System.err.println("연결할 수 없습니다.");
-            e.printStackTrace();
+            throw e;
         }
     }
 
